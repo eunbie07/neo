@@ -1,4 +1,4 @@
-#include <stio.h> // system library < >, User library " "
+#include <stdio.h> // system library < >, User library " "
 
 void main() {
         printf("Hello World~!!\n");
