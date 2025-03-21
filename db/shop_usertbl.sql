@@ -5,7 +5,7 @@ CREATE TABLE shop.usertbl (
 	addr nchar(2) NOT NULL,
 	mobile1 char(3),
 	mobile2 char(8),
-	heigth number(3),
+	height number(3),
 	mdata DATE
 );
 
