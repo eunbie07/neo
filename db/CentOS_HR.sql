@@ -1,18 +1,16 @@
-SELECT 'successes' FROM dual;
+SELECT 'successe' FROM dual;
 
-SELECT count(*) FROM HR.BIGEMPLOYEES be ;
-
-SELECT * FROM HR.BIGEMPLOYEES ;
-
-
+SELECT count(*) FROM hr.BIGEMPLOYEES b ;
 
 CREATE USER "USER1" IDENTIFIED BY "1234"
 
-GRANT ALL ON SHOP.MEMBERtbl TO "USER1" ;
+GRANT ALL ON SHOP.membertbl TO "USER1";
 
-GRANT ALL ON SHOP.producttbl TO "USER1" ;
+GRANT ALL ON SHOP.producttbl TO "USER1";
 
-GRANT SELECT ON hr.BIGEMPLOYEES TO "USER1";
+GRANT SELECT ON HR.BIGEMPLOYEES  TO "USER1";
+
+select * from hr.bigemployees;
 
 
 
@@ -20,32 +18,36 @@ CREATE USER "DIRECTOR" IDENTIFIED BY "1234";
 
 ALTER USER "DIRECTOR" account unlock;
 
-grant create session to "DIRECTOR";
+GRANT CREATE SESSION TO "DIRECTOR";
 
-GRANT ALL ON SHOP.MEMBERtbl TO "DIRECTOR" ;
+GRANT ALL ON SHOP.membertbl TO "DIRECTOR";
 
-GRANT ALL ON SHOP.producttbl TO "DIRECTOR" ;
+GRANT ALL ON SHOP.producttbl TO "DIRECTOR";
 
-GRANT SELECT ON hr.BIGEMPLOYEES TO "DIRECTOR";
+GRANT SELECT ON HR.BIGEMPLOYEES  TO "DIRECTOR";
 
 
-SELECT * FROM usertbl ;
+SELECT * FROM usertbl;
 
-SELECT * FROM buytbl ;
+SELECT * FROM buytbl;
+
 
 CREATE TABLE buytbl2 AS (SELECT * FROM buytbl);
 
 SELECT * FROM buytbl2;
 
-CREATE TABLE buytbl3 AS (SELECT userid, prodname FROM buytbl) ;
+
+CREATE TABLE buytbl3 AS (SELECT userid, prodname FROM buytbl);
 
 SELECT * FROM buytbl3;
+
 
 SELECT userid AS "사용자명", sum(amount) AS "총구매량"
 FROM buytbl GROUP BY userid;
 
-SELECT userid AS "사용자명", sum(amount*price) AS "총구매액"
+SELECT userid AS "사용자명", sum(amount * price) AS "총구매액"
 FROM buytbl GROUP BY userid;
+
 
 SELECT cast(avg(amount) AS number(5,3)) AS "평균 구매 수량"
 FROM buytbl;
@@ -53,19 +55,27 @@ FROM buytbl;
 SELECT cast(avg(amount) AS number(5,3)) AS "평균 구매 수량"
 FROM buytbl GROUP BY userid;
 
-SELECT username, MAX(HEIGTH), min(HEIGTH)
+
+SELECT username, max(height), min(height) 
 FROM usertbl GROUP BY username;
 
-SELECT COUNT(MOBILE1) AS "휴대폰 소유자" FROM USERTBL;
+SELECT username, height FROM usertbl
+WHERE height = (SELECT max(height) FROM usertbl)
+OR height = (SELECT min(height) FROM usertbl);
 
-SELECT USERID AS "사용자명", SUM(amount * price) AS "총구매액"
-FROM BUYTBL GROUP BY BUYTBL.USERID
+
+SELECT count(*) FROM usertbl;
 
 
-SELECT USERID AS "사용자명", SUM(amount * price) AS "총구매액"
-FROM BUYTBL GROUP BY BUYTBL.USERID
-HAVING sum(price*amount)>1000
-order BY sum(price*amount);
+SELECT userid AS "사용자명", sum(amount * price) AS "총구매액"
+FROM buytbl GROUP BY userid;
+
+
+SELECT userid AS "사용자명", sum(amount * price) AS "총구매액"
+FROM buytbl GROUP BY userid
+HAVING sum(price * amount) > 1000
+ORDER BY sum(price * amount);
+
 
 SELECT idnum, groupname, sum(price * amount)
 AS "비용"
@@ -80,11 +90,12 @@ GROUP BY rollup(groupname);
 
 SELECT groupname, sum(price * amount)
 AS "비용",
-grouping_id(groupname) AS "추가행 여부"
+GROUPING_ID(groupname) AS "추가행 여부"
 FROM buytbl
 GROUP BY rollup(groupname);
 
-CREATE TABLE cubetbl(prodname nchar(3), color nchar(2), amount int);
+
+CREATE TABLE cubetbl(prodname nchar(3), color nchar(2), amount int); 
 
 INSERT INTO cubetbl values('컴퓨터', '검정', 11);
 
@@ -101,9 +112,10 @@ FROM cubetbl
 GROUP BY cube(color, prodname)
 ORDER BY prodname, color;
 
-CREATE TABLE emptbl (emp nchar(3), manager nchar (3), department nchar(3));
 
-INSERT INTO emptbl VALUES ('나사장', '없음', '없음') ;
+CREATE TABLE emptbl (emp nchar(3), manager nchar(3), department nchar(3));
+
+INSERT INTO emptbl VALUES ('나사장', '없음', '없음');
 INSERT INTO emptbl VALUES ('김재무', '나사장', '재무부');
 INSERT INTO emptbl VALUES ('김부장', '김재무', '재무부');
 INSERT INTO emptbl VALUES ('이부장', '김재무', '재무부');
@@ -115,64 +127,67 @@ INSERT INTO emptbl VALUES ('최정보', '나사장', '정보부');
 INSERT INTO emptbl values ('윤차장', '최정보', '정보부');
 INSERT INTO emptbl values ('이주임', '윤차장', '정보부');
 
-SELECT * FROM emptbl;
+SELECT *  FROM emptbl;
+
+WITH empcte(empname, mgrname, dept, emplevel)
+AS
+(
+	(SELECT emp, manager, department, 0
+	FROM emptbl
+	WHERE manager='없음')
+	UNION ALL
+	(SELECT emptbl.emp, emptbl.manager, 
+	emptbl.department, empcte.emplevel+1
+	FROM emptbl INNER JOIN empcte
+	ON emptbl.manager = empcte.empname)
+)
+SELECT * FROM empcte ORDER BY dept, emplevel;
+
 
 
 WITH empcte(empname, mgrname, dept, emplevel)
 AS
- (
- 		(SELECT emp, manager, department, 0
- 		FROM emptbl
- 		WHERE manager='없음')
- 		UNION ALL
- 		(SELECT emptbl.emp, emptbl.manager,
- 		emptbl.department, empcte.emplevel+1
- 		FROM emptbl INNER JOIN empcte
- 		ON emptbl.manager = empcte.empname)
- )
- SELECT * FROM empcte ORDER BY dept, emplevel;
+(
+	(SELECT emp, manager, department, 0
+	FROM emptbl
+	WHERE manager='없음')
+	UNION ALL
+	(SELECT emptbl.emp, emptbl.manager, 
+	emptbl.department, empcte.emplevel+1
+	FROM emptbl INNER JOIN empcte
+	ON emptbl.manager = empcte.empname)
+)
+SELECT concat(rpad('ㄴ', emplevel * 2 + 1 , 'ㄴ'), 
+empname) AS "직원이름",
+dept AS "직원부서"
+FROM empcte ORDER BY dept, emplevel; 
 
- 
-WITH empcte(empname, mgrname, dept, emplevel)
-AS
- (
- 		(SELECT emp, manager, department, 0
- 		FROM emptbl
- 		WHERE manager='없음')
- 		UNION ALL
- 		(SELECT emptbl.emp, emptbl.manager,
- 		emptbl.department, empcte.emplevel+1
- 		FROM emptbl INNER JOIN empcte
- 		ON emptbl.manager = empcte.empname)
- )
- SELECT concat(rpad('ㄴ', emplevel * 2 + 1, 'ㄴ'),
- empname) AS "직원이름",
- dept AS "직원부서"
- FROM empcte ORDER BY dept, emplevel;
- 
+
 
 WITH empcte(empname, mgrname, dept, emplevel)
 AS
- (
- 		(SELECT emp, manager, department, 0
- 		FROM emptbl
- 		WHERE manager='없음')
- 		UNION ALL
- 		(SELECT emptbl.emp, emptbl.manager,
- 		emptbl.department, empcte.emplevel+1
- 		FROM emptbl INNER JOIN empcte
- 		ON emptbl.manager = empcte.empname
- 		WHERE emplevel < 2)
- )
- SELECT concat(rpad('ㄴ', emplevel * 2 + 1, 'ㄴ'),
- empname) AS "직원이름",
- dept AS "직원부서"
- FROM empcte ORDER BY dept, emplevel;
+(
+	(SELECT emp, manager, department, 0
+	FROM emptbl
+	WHERE manager='없음')
+	UNION ALL
+	(SELECT emptbl.emp, emptbl.manager, 
+	emptbl.department, empcte.emplevel+1
+	FROM emptbl INNER JOIN empcte
+	ON emptbl.manager = empcte.empname
+	WHERE emplevel < 2)
+)
+SELECT concat(rpad('ㄴ', emplevel * 2 + 1 , 'ㄴ'), 
+empname) AS "직원이름",
+dept AS "직원부서"
+FROM empcte ORDER BY dept, emplevel; 
 
 
-CREATE table testtbl1 (id NUMBER(4), username nchar(3), age number(2));
+-- insert Query
 
-INSERT INTO testtbl1 values(1, '홍길동', 25) ;
+CREATE TABLE testtbl1 (id NUMBER(4), username nchar(3), age number(2));
+
+INSERT INTO testtbl1 values(1, '홍길동', 25);
 
 SELECT * FROM testtbl1;
 
@@ -184,12 +199,13 @@ INSERT INTO testtbl1 (username, id, age) VALUES ('지민', 3, 26);
 
 SELECT * FROM testtbl1;
 
---error
+-- error
 INSERT INTO testtbl1 values(4, 36, '공유');
 
----
+--
+
 CREATE TABLE testtbl2 (
-	id NUMBER (4),
+	id number(4),
 	username nchar(3),
 	age number(2),
 	nation nchar(4) DEFAULT '대한민국'
@@ -199,39 +215,38 @@ CREATE SEQUENCE idseq2
 START WITH 1
 INCREMENT BY 1;
 
-INSERT INTO TESTTBL2 VALUES (idseq2.nextval, '유나', 25, default);
+INSERT INTO testtbl2 VALUES (idseq2.nextval, '유나', 25, default);
 
-SELECT * FROM TESTTBL2;
+SELECT * FROM testtbl2;
 
 INSERT INTO testtbl2 VALUES (11, '쯔위', 18, '대만');
 
-SELECT * FROM TESTTBL2;
+SELECT * FROM testtbl2;
 
-ALTER sequence idseq2
+ALTER SEQUENCE idseq2
 INCREMENT BY 10;
-	
-INSERT INTO TESTTBL2 VALUES (idseq2.nextval, '미나', 21, '일본');
 
-SELECT * FROM TESTTBL2;
+INSERT INTO testtbl2 VALUES (idseq2.nextval, '미나', 21, '일본');
 
+SELECT * FROM testtbl2;
 
-ALTER sequence idseq2
+ALTER SEQUENCE idseq2
 INCREMENT BY 1;
-	
-INSERT INTO TESTTBL2 VALUES (idseq2.nextval, '사나', 21, '일본');
 
-SELECT * FROM TESTTBL2;
+INSERT INTO testtbl2 VALUES (idseq2.nextval, '사나', 21, '일본');
 
+SELECT * FROM testtbl2;
 
-ALTER sequence idseq2
+ALTER SEQUENCE idseq2
 INCREMENT BY 5;
-	
-INSERT INTO TESTTBL2 VALUES (idseq2.nextval, '채영', 23, default);
 
-SELECT * FROM TESTTBL2;
+INSERT INTO testtbl2 VALUES (idseq2.nextval, '채영', 23, default);
 
+SELECT * FROM testtbl2;
 
-SELECT idseq2.currval from testtbl2;
+SELECT idseq2.currval FROM testtbl2;
+
+--
 
 CREATE TABLE testtbl3 (id NUMBER(3));
 
@@ -241,103 +256,104 @@ INCREMENT BY 100
 MINVALUE 100
 MAXVALUE 300
 CYCLE
-nocache;
+nocache; 
 
-INSERT INTO TESTTBL3 VALUES (cycleseq.nextval);
+INSERT INTO testtbl3 VALUES (cycleseq.nextval);
 
-INSERT INTO TESTTBL3 VALUES (cycleseq.nextval);
+INSERT INTO testtbl3 VALUES (cycleseq.nextval);
 
-INSERT INTO TESTTBL3 VALUES (cycleseq.nextval);
+INSERT INTO testtbl3 VALUES (cycleseq.nextval);
 
-INSERT INTO TESTTBL3 VALUES (cycleseq.nextval);
+INSERT INTO testtbl3 VALUES (cycleseq.nextval);
 
-SELECT * FROM TESTTBL3;
+SELECT * FROM testtbl3;
 
-----rollback은 sql developer에서 만 할 것. 
+
+--
+
 CREATE TABLE testtbl4(
 	empid number(6),
-	FIRSTname varchar2(20),
+	firstname varchar2(20),
 	lastname varchar2(25),
 	phone varchar2(20)
 );
 
-
-
 INSERT INTO testtbl4
-	SELECT employee_id, first_name, last_name, phone_number
+	SELECT EMPLOYEE_id, first_name, last_name, phone_number
 	FROM employees;
 
+SELECT * FROM testtbl4;
 
-SELECT * FROM TESTTBL4;
 
-----update Query
+-- Update Query
 
-UPDATE TESTTBL4 
+UPDATE testtbl4
 	SET firstname='David'
-	WHERE empid=100
-	
-SELECT * FROM TESTTBL4
 	WHERE empid=100;
 
-----delete Query
+SELECT * FROM testtbl4
+WHERE empid=100;
+
+
+-- delete Query
 
 SELECT * FROM testtbl4 WHERE lastname='King';
 
-----commit
 
+-- commit
 COMMIT;
 
-DELETE FROM testtbl4
+DELETE FROM testtbl4 
 WHERE firstname='David' AND lastname='King';
 
 SELECT * FROM testtbl4 WHERE lastname='King';
 
----rollback
 
+-- rollback
 ROLLBACK;
 
 SELECT * FROM testtbl4 WHERE lastname='King';
 
----------------------
+
+-- 
 
 CREATE TABLE bigtbl1
-AS
+AS 
 	SELECT LEVEL AS bigid,
-	round(dbms_random.VALUE(1,500000), 0)
+	round(dbms_random.value(1,500000), 0)
 AS numdata
 	FROM dual
 	CONNECT BY LEVEL <= 500000;
+
 
 CREATE TABLE bigtbl2
-AS
+AS 
 	SELECT LEVEL AS bigid,
-	round(dbms_random.VALUE(1,500000), 0)
+	round(dbms_random.value(1,500000), 0)
 AS numdata
 	FROM dual
 	CONNECT BY LEVEL <= 500000;
+
 
 CREATE TABLE bigtbl3
-AS
+AS 
 	SELECT LEVEL AS bigid,
-	round(dbms_random.VALUE(1,500000), 0)
+	round(dbms_random.value(1,500000), 0)
 AS numdata
 	FROM dual
 	CONNECT BY LEVEL <= 500000;
-	
 
+DELETE FROM  bigtbl1;
 
-delete from bigtbl1;
+COMMIT;
 
-commit;
+DROP TABLE bigtbl2;
 
-drop table bigtbl2;
+TRUNCATE TABLE bigtbl3;
 
-truncate table bigtbl3;
+DROP TABLE bigtbl1;
 
-drop table bigtbl1;
-
-drop table bigtbl3;	
-
+DROP TABLE bigtbl3;
 
 --
 
@@ -357,7 +373,7 @@ INSERT INTO changetbl values('TKV', '태권브이','한국','신규가입');
 INSERT INTO changetbl values('LGG', NULL,'제주','주소변경');
 INSERT INTO changetbl values('LJB', NULL,'한국','주소변경');
 INSERT INTO changetbl values('BBK', NULL,'탈퇴','회원탈퇴');
-INSERT INTO changetbl values('SSK', NULL,'탈퇴','회원탈퇴');	
+INSERT INTO changetbl values('SSK', NULL,'탈퇴','회원탈퇴');
 
 SELECT * FROM member1;
 
@@ -365,87 +381,64 @@ MERGE INTO member1 M
 USING (SELECT changetype, userid, username, addr FROM changetbl) C
 ON (M.userid = C.userid)
 WHEN MATCHED THEN
-	UPDATE SET M.addr = C.addr
-	DELETE WHERE C.changetype = '회원탈퇴'
+        UPDATE SET M.addr = C.addr
+        DELETE WHERE C.changetype = '회원탈퇴'
 WHEN NOT MATCHED THEN
-	INSERT (userid, username, addr) VALUES (C.userid, C.username, C.addr)
+        INSERT (userid, username, addr) VALUES (C.userid, C.username, C.addr);
 	
 SELECT * FROM changetbl;
+
 SELECT * FROM usertbl;
+
 SELECT * FROM member1;
 
-ALTER TABLE HR.MEMBER1 MODIFY USERNAME NVARCHAR2(20) NULL;
+-- 
 
-------
-----pl/sql developer
+SELECT avg(amount) FROM buytbl;
 
-set SERVEROUTPUT ON;
+SELECT CAST(avg(amount) AS number(3)) from buytbl;
 
-DECLARE
-    myvar1 number(3);
-    myvar2 number(5,2) := 3.14;
-    myvar3 nvarchar2(20) := '이승기 키 -> ';
-BEGIN
-    myvar1 := 5;
-    dbms_output.put_line(myvar1);
-    dbms_output.put_line(myvar1+myvar2);
-    select height into myvar1 from usertbl
-    where username='이승기';
-    dbms_output.put_line(myvar3 || to_char(myvar1));
-END;
+SELECT CAST(avg(amount) AS number(3,2)) from buytbl;
 
-----
+SELECT CAST('2025$3$21' AS date) from dual; 
 
+SELECT CAST(price AS char(5)) || 'X ' || CAST(amount AS char(4)) || '==' AS "단가 X 수량", 
+    price * amount AS "구매액"
+    FROM buytbl;
 
-select avg(amount) from buytbl;
+SELECT to_char(12345, '$999,999') FROM dual;
 
-select cast(avg(amount) as number(3)) from buytbl;
+SELECT to_char(12345, '$000,999') FROM dual;
 
-select cast(avg(amount) as number(3,2)) from buytbl;
+SELECT to_char(12345, 'L999,999') FROM dual;
 
-select cast('2025$3$21' as date) from dual;
+SELECT to_char(sysdate, 'YYYY/MM/DD hh:mm:ss') FROM dual;
 
-select cast(price as char(5)) || 'X'  || cast(amount as char(4)) || '==' as "단가 X 수량",
-    price * amount as "구매액"
-    from buytbl;
-    
-select to_char(12345, '$999,999') from dual;
+SELECT to_char(10, 'X'), to_char(255, 'XX') FROM dual;
 
-select to_char(12345, '$000,999') from dual;
-
-select to_char(12345, 'L000,999') from dual;
-
-select to_char(sysdate, 'YYYY/MM/DD hh:mm:ss') from dual;
-
-select to_char(10, 'X'), to_char(255, 'XX') from dual;
-
-
-select to_char(sysdate, 'YYYY/MM/DD hh:mm:ss') from dual;
-
-select to_number('0123'), to_number('1234.456') from dual;
+SELECT to_number('0123'), to_number('1234.456') FROM dual;
 
 --
 
 SELECT '100' + '200' FROM dual;
 
-SELECT concat('100', '200') FROM dual;
+SELECT concat('100','200') FROM dual;
 
 SELECT 100 || '200' FROM dual;
 
-SELECT price FROM buytbl WHERE price >= '500'; 
+SELECT price FROM buytbl WHERE price >= '500';
 
-SELECT ascii('A'), chr(65), asciistr('한'), UNISTR('\D55C') FROM dual;
+SELECT ascii('A'), chr(65), asciistr('한'), unistr('\D55C') FROM dual;
 
-SELECT length('한글'), length('AB'), lengthb('한글'), lengthb('AB')  FROM dual;
+SELECT LENGTH('한글'), length('AB'), lengthb('한글'), lengthb('AB') FROM dual;
 
-SELECT concat('이것이', 'oracle이다'), '이것이' || 'oracle이다' FROM dual;
+SELECT concat('이것이', 'ORACLE이다'), '이것이' || 'ORACLE이다' FROM dual;
 
-SELECT instr('이것이 oracle이다. 이것도 oracle이다', '이것', 2) FROM dual;
+SELECT instr('이것이 ORACLE이다. 이것도 ORACLE이다', '이것', 2) FROM dual;
 
 SELECT lower('abcdEFGH'), upper('abcdEFGH'), initcap('this is oracle') FROM dual;
 
 SELECT replace('이것이 ORACLE이다', '이것이', 'This is') FROM dual;
-
 
 SELECT translate('이것이 ORACLE이다', '이것이', 'AB') FROM dual;
 
@@ -459,15 +452,15 @@ SELECT ltrim(' 이것이'), rtrim('이것$$$$', '$') FROM dual;
 
 SELECT trim(' 이것이 '), trim(BOTH 'ㅋ' FROM 'ㅋㅋ재밌어요.ㅋㅋㅋㅋㅋㅋㅋㅋ') FROM dual;
 
-SELECT regexp_count('이것이 오라클이다', '이') FROM dual;
+SELECT regexp_count('이것이 오라클이다','이') FROM dual;
 
------
+--
 
 SELECT abs(-100) FROM dual;
 
-SELECT ceil(4.4), floor(4.4), round(4.4) FROM dual;
+SELECT CEIL(4.4), floor(4.4), round(4.4) FROM dual;
 
-SELECT MOD(13,4) FROM dual;
+SELECT mod(13,4) FROM dual;
 
 SELECT power(2,3) FROM dual;
 
@@ -477,76 +470,76 @@ SELECT trunc(12345.12345, 2), trunc(12345.12345, -2) FROM dual;
 
 SELECT add_months('2025-01-01', 5), add_months(sysdate, -5) FROM dual;
 
-SELECT TO_DATE('2025-01-01') + 5, sysdate -5 FROM dual;
-
-SELECT extract(YEAR FROM DATE '2025-01-01'), extract(DAY FROM sysdate) FROM dual;
+SELECT to_date('2025-01-01') + 5, sysdate - 5 FROM dual;
+ 
+SELECT EXTRACT(YEAR FROM DATE '2025-01-01'), EXTRACT(DAY FROM sysdate) FROM dual;
 
 SELECT last_day('2025-02-01') FROM dual;
 
-SELECT next_day('2025-03-16', '금요일') , NEXT_day(sysdate, '토요일') FROM dual;
+SELECT next_day('2025-03-16', '금요일'), next_day(sysdate, '토요일') FROM dual;
 
 SELECT months_between(sysdate, '2004-11-22') FROM dual;
 
-SELECT round(months_between(sysdate, '1990-07-15')) FROM dual;
-
----
+--
 
 SELECT bin_to_num(1,0), bin_to_num(1,1,1,1) FROM dual;
 
 SELECT bin_to_num(1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1) FROM dual;
 
-SELECT NUMTODSINTERVAL(48, 'HOUR'), NUMTODSINTERVAL(360000, 'SECOND') FROM DUAL;
+SELECT NUMTODSINTERVAL(48, 'HOUR'), NUMTODSINTERVAL(360000, 'SECOND') FROM dual;
 
-SELECT NUMTOYMINTERVAL(37, 'MONTH'), NUMTOYMINTERVAL(1.5, 'YEAR') FROM DUAL;
+SELECT NUMTOYMINTERVAL(37, 'MONTH'), NUMTOYMINTERVAL(1.5, 'YEAR') FROM dual;
 
----
+--
 
-
-SELECT ROW_number() 
-OVER (ORDER BY height desc) "키 큰 순위", username, addr, height
+SELECT row_number() 
+OVER (ORDER BY height DESC) "키 큰 순위", username, addr, height
 FROM usertbl;
 
-SELECT ROW_number() 
-OVER (ORDER BY height asc) "키 큰 순위", username, addr, height
+SELECT row_number() 
+OVER (ORDER BY height ASC) "키 큰 순위", username, addr, height
 FROM usertbl;
 
 SELECT addr, row_number() 
-OVER (PARTITION BY addr ORDER BY height DESC, username asc )
+OVER (PARTITION BY addr ORDER BY height DESC, username ASC)
 "키 큰 순위", username, addr, height 
 FROM usertbl;
 
-SELECT DENSE_RANK()
-OVER (ORDER BY height DESC)
+SELECT dense_rank()  
+OVER (ORDER BY height DESC) 
 "키 큰 순위", username, addr, height 
 FROM usertbl;
 
-SELECT RANK()
-OVER (ORDER BY height DESC)
+SELECT rank()  
+OVER (ORDER BY height DESC) 
 "키 큰 순위", username, addr, height 
 FROM usertbl;
 
----라운드 로빈
-SELECT ntile(3) OVER(ORDER BY height DESC) 
-"반번호", username, addr, height FROM usertbl u ;
 
-SELECT username, addr, height AS "키",
-height - (LEAD(height, 1, 0)
-over(ORDER BY height DESC))
-	AS "다음 사람과의 키 차이"
-	FROM usertbl;
-
-SELECT username, addr, height AS "키",
-height - (first_value(height)
-over(PARTITION BY addr ORDER BY height DESC))
-	AS "지역별 최대 키 차이"
-	FROM usertbl;
+-- 라운드 로빈
+SELECT NTILE(3) over(ORDER BY height DESC) 
+"반번호", username, addr, height FROM USERTBL u ;
 
 
-SELECT username, addr, height AS "키",
+SELECT username, addr, height AS "키", 
+height - (LEAD(height, 1, 0) 
+OVER (ORDER BY height DESC))
+	AS "다음 사람과의 키 차이" 
+	FROM USERTBL u ;
+
+
+SELECT username, addr, height AS "키", 
+height - (FIRST_VALUE(height) 
+OVER (PARTITION BY addr ORDER BY height DESC))
+	AS "지역별 최대 키와 차이" 
+	FROM USERTBL u ;
+
+
+SELECT username, addr, height AS "키", 
 (CUME_DIST() 
-over(PARTITION BY addr ORDER BY height DESC)) * 100
-	AS "누적 인원 백분율 (%)"
-	FROM usertbl;
+OVER (PARTITION BY addr ORDER BY height DESC)) * 100
+	AS "누적 인원 백분율 (%)" 
+	FROM USERTBL u ;
 
 
 CREATE TABLE pivotTest(
@@ -568,7 +561,6 @@ INSERT INTO PIVOTTEST VALUES ('윤종신', '여름', 64);
 SELECT * FROM pivotTest;
 
 SELECT * FROM pivotTest
-	pivot (sum(amount)
+	pivot(sum(amount)
 		FOR season
-		IN ('봄', '여름', '가을', '겨울'));
-		
+		IN('봄','여름','가을', '겨울'));
