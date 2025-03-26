@@ -28,10 +28,10 @@ db.ord_detail.insert({
         qty:"400",
         price:"152000"
     }],
-    ord_id_id:db.ord.findOne({ord_id:"2025-03-26"})._id
+    ordid_id:db.ord.findOne({ord_id:"2025-03-26"})._id
 })
 
 db.ord_detail.find({ord_id: db.ord.findOne({ord_id: "2025-03-26"})._id}, {ord_id: 1, _id: 0});
 
-db.ord.find({_id:db.ord_detail.findOne().ord_id}).emp_name;
-db.ord.find({_id:db.ord_detail.findOne().ord_id}).total;
+db.ord.find({_id:db.ord_detail.findOne().ordid}).emp_name;
+db.ord.find({_id:db.ord_detail.findOne().ordid}).total;
