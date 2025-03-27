@@ -1,0 +1,2 @@
+sh.add.Shard("ShardReplSet/shard:27021")
+sh.add.Shard("ShardReplSet/shard:27022")
