@@ -6,7 +6,7 @@ CREATE TABLE shop.usertbl (
 	mobile1 char(3),
 	mobile2 char(8),
 	height number(3),
-	mdata DATE
+	mdate DATE
 );
 
 insert into shop.usertbl values('LSG', '이승기', 1987, '서울', '011', '11111111', 182, '2008-8-8');
