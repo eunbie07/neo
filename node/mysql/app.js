@@ -4,32 +4,33 @@ const env = require('dotenv').config({ path: "../../.env" });
 var app = express();
 
 var connection = mysql.createConnection({
-    host: process.env.NODE_MYSQL_HOST,
-    user: process.env.NODE_MYSQL_USER,
-    password: process.env.NODE_MYSQL_PASSWORD,
-    database: process.env.NODE_MYSQL_DATABASE
+    host: process.env.host,
+    user: process.env.user,
+    port: process.env.port,
+    password: process.env.password,
+    database: process.env.database
 });
 
 connection.connect(function (err) {
-    if (err) {
-        console.error('Database is conneted~!!\n\n');
+    if (!err) {
+        console.log("Database is connected~!!\n\n");
     } else {
-        console.log('Error connectiong Database~!!\n\n');
+        console.log("Error connecting Database~!!")
     }
-});
+})
 
 app.get('/', function (req, res) {
-    connection.query('SELECT * FROM st_info', function (err, rows, fields) {
+    connection.query('select * from st_info', function (err, rows, fields) {
         connection.end();
-        if (err) {
+        if (!err) {
             res.send(rows);
             console.log("The solution is : ", rows);
         } else {
-            console.log('Error while performing Query~!!\n\n');
+            console.log('Error while performing Query~!!\n');
         }
     })
 })
 
-app.listen(8000, function() {
-    console.log("8000 Port : Server Started~!!\n\n");
+app.listen(8000, function () {
+    console.log('8000 Port : Server Started~!!\n');
 })
