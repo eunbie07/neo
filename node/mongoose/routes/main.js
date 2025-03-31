@@ -61,9 +61,10 @@ app.post('/insert', async function (req, res) {
     }
 
     var existingUser = await User.findOne({ userid: userid });
-if (existingUser) {
+
+    if (existingUser) {
     return res.status(400).send('User ID already exists');
-}
+    }
 
     var user = new User({ 'userid': userid, 'name': name, 'city': city, 'sex': sex, 'age': age });
 
