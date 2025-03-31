@@ -7,7 +7,7 @@ from typing import Optional
 
 app = FastAPI()
 
-base_url = 'http://192.168.1.31:5000/users'
+base_url = 'http://192.168.1.34:5000/users'
 
 @app.get(path='/')
 async def healthCheck():
@@ -18,15 +18,14 @@ async def getUsers():
     response = requests.get(base_url)
     return response.json()
 
-@app.get(path='/users')
-async def postUsers(id:str,name: str ):
+@app.post(path='/users')
+async def postUsers(id:str, name: str):
     data = dict(id=id, name=name)
-    response = requests.get(base_url,json=data)
+    response = requests.get(base_url, json=data)
     return response.json()
 
-
 @app.get(path='/users/params1')
-async def user_params(id:Optional[str] = None,name: Optional[str] = None):
+async def user_params(id:Union[str, None] = None, name:Union[str, None] = None):
     if (id is None) and (name is None):
         return "id, name을 입력하세요."
     else:
@@ -35,9 +34,24 @@ async def user_params(id:Optional[str] = None,name: Optional[str] = None):
         elif name is None:
             params = '?id=' + id
         else:
-            params = '?id=' + id 
-            params = '&name=' + name
-        data = dict(id=id, name=name)
+            params = '?id=' + id
+            params += '&name=' + name
     url = base_url + params
-    response = requests.get(base_url)
+    response = requests.get(url)
+    return response.json()
+
+@app.get(path='/users/params2')
+async def user_params(id:Optional[str] = None, name:Optional[str] = None):
+    if (id is None) and (name is None):
+        return "id, name을 입력하세요."
+    else:
+        if id is None:
+            params = '?name=' + name
+        elif name is None:
+            params = '?id=' + id
+        else:
+            params = '?id=' + id
+            params += '&name=' + name
+    url = base_url + params
+    response = requests.get(url)
     return response.json()
