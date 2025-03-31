@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="utf-8">
+        <meta charset="utf-8" />
         <title>JSON Server</title>
     </head>
     <body>
         <h1>JSON Server - CRUD</h1>
+        <hr />
         <form action="postData" method="post" name="userForm" target="targetURL">
             <input type="button" value="Get Data" onclick='document.targetURL.location.href="/getData"'/>
             <p/>
@@ -13,6 +14,7 @@
             <p/>
             NAME <input type="text" name="name" size=10>
             <p/>
+            <hr />
             <input type="submit" value="Post data" />&nbsp;&nbsp; 
             <button type="submit" method="put" formaction="putData">put Data</button>&nbsp;&nbsp; 
             <button type="submit" method="delete" formaction="deleteData">delete Data</button><p/>&nbsp;&nbsp; 
