@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>리터럴 표기법으로 Book 객체 만들기</title>
+        <script>
+            let book = {
+                title : "스며드는 리눅스",
+                author : "문준현",
+                totalPage : 350,
+                category : "IT",
+                price : 30000,
+                leftover : 350,
+                rentalState : 1,
+                rentalUser : "",
+                rentalDay : 0,
+
+                // Method 
+                reading : function (page) {
+                    this.leftover -= page;
+                    return this.leftover;
+                },
+                rental : function (user, day) {
+                    this.rentalUser = user;
+                    this.rentalDay = day;
+                    this.rentalState = 0;
+                    return this.rentalState;
+                },
+            }        
+        </script>
+    </head>
+    <body>
+        <h3>리터럴 표기법으로 Book 객체 만들기</h3>
+        <hr />
+    </body>
+    </head>
+</html>
