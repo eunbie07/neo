@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>오늘 저녁</title></head>
+<body>
+<h1>오저모??</h1>
+<hr>
+<style>
+  body { background-color : rgb(239, 250, 230); color : rgb(4, 0, 128);
+      margin-left : 40px; margin-right : 40px; }
+  h3 { text-align : center; color : darkred; }
+  hr { height : 5px; border:solid grey; 
+      background-color : grey; }
+  span {color : blue; font-size : 20px; }
+  fieldset { background-color : rgb(246, 247, 242); color : rgb(4, 0, 128);
+  legend { background-color : rgb(243, 244, 243); color : rgb(4, 0, 128);
+</style>
+<form name="menuForm" action="/tdm" method="post">
+<fieldset>
+<legend><b>오늘 저녁 뭐 먹지??</legend>    
+
+data : 	<input type="date" value="2025-04-01">&nbsp;&nbsp;
+time : 	<input type="time" value="19:30"><br>
+
+<hr>
+<input type="radio" name="menu" value=1>
+    <label>중 식</label>
+    <select name="중식">
+		<option value="1">짜장면</option>
+		<option value="2" selected>짬 뽕</option>
+		<option value="3">탕수육</option>
+	  </select>
+    <br>
+    <p />
+    <input type="radio" name="menu" value=2>
+    <label>양 식</label>
+    <select name="양식"> 
+		<option value="1">파스타</option>
+		<option value="2" selected>뇨 끼</option>
+		<option value="3">스테이크</option>
+	  </select>
+    <br>
+    <p />
+    <input type="radio" name="menu" value=3>
+    <label>한 식</label>
+    <select name="한식"> 
+		<option value="1">김 찌</option>
+		<option value="2" selected>된 찌</option>
+		<option value="3">비빔밥</option>
+	  </select>
+    <br>
+    <p />
+    <input type="radio" name="menu" value=4>
+    <label>기 타</label>
+    <input type="text" size="5" value="">
+    <br>
+    <p />
+    <hr>
+    &nbsp;<input type="submit" value="전송">&nbsp;
+    <input type="reset" value="취소"><p />
+  </b>
+  </fieldset>
+  </form>
+  </body>
+</html>
