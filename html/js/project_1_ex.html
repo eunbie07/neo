@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>강남역 미세먼지 비교</title>
+  <style>
+    body { font-family: sans-serif; padding: 2rem; }
+    .box { border: 1px solid #ccc; border-radius: 10px; padding: 1rem; margin-bottom: 1rem; }
+    .good { color: green; }
+    .bad { color: red; }
+  </style>
+</head>
+<body>
+  <h1>🚇 강남역 실내 vs 실외 미세먼지 비교</h1>
+  <button onclick="compareDust()">비교하기</button>
+
+  <div class="box" id="result"></div>
+
+  <script>
+    const serviceKey = "89mzRrYVPoIjA0HWVA%2FtiFPmvByqnXJFK8acRZ9tVXmETXDcn%2FQq0LmCwdO%2B5H%2F4q4G6Emy3NFG2bLbk8pxoPQ%3D%3D"; // ★ 서비스 키 넣으세요
+
+    async function compareDust() {
+      const stationName = encodeURIComponent("강남구");
+      const url = `https://apis.data.go.kr/B552584/ArpltnInforInqireSvc/getMsrstnAcctoRltmMesureDnsty?stationName=${stationName}&dataTerm=DAILY&pageNo=1&numOfRows=1&returnType=json&serviceKey=${serviceKey}`;
+
+      try {
+        const response = await fetch(url);
+        const json = await response.json();
+        const outsidePM10 = parseInt(json.response.body.items[0].pm10Value); // 실외
+
+        const insidePM10 = 25; // 실내 평균 (서울교통공사 발표 기준값)
+
+        const recommendation = outsidePM10 > insidePM10
+          ? "지하철 역내 공기가 더 깨끗합니다. 지하 이동을 추천합니다!"
+          : "지상 공기가 더 좋습니다. 버스를 타셔도 괜찮아요.";
+
+        document.getElementById("result").innerHTML = `
+          <p>📍 <strong>강남역 실외 PM10:</strong> <span class="${outsidePM10 > 50 ? 'bad' : 'good'}">${outsidePM10}㎍/㎥</span></p>
+          <p>🏢 <strong>강남역 역내 PM10 (예상):</strong> <span class="${insidePM10 > 50 ? 'bad' : 'good'}">${insidePM10}㎍/㎥</span></p>
+          <hr>
+          <p><strong>${recommendation}</strong></p>
+        `;
+      } catch (error) {
+        document.getElementById("result").innerHTML = `<p style="color:red">데이터를 불러오는 데 실패했습니다.</p>`;
+        console.error(error);
+      }
+    }
+  </script>
+</body>
+</html>
