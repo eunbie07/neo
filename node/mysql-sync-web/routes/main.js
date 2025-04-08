@@ -29,7 +29,7 @@ app.get('/select', (req, res) => {
     res.send(result);
 })
 
-// insert data to st_info table
+// insert dataProject to st_info table
 app.get('/insert', (req, res) => {
     const { st_id, name, dept } = req.query;
     const result = connection.query("insert into st_info values (?, ?, ?)",
@@ -37,7 +37,7 @@ app.get('/insert', (req, res) => {
         res.redirect('/select');
 })
 
-// update data to st_info table
+// update dataProject to st_info table
 app.get('/update', (req, res) => {
     const { st_id, name, dept } = req.query;
     const result = connection.query("update st_info set NAME = ?, DEPT = ? where ST_ID = ?",
@@ -45,7 +45,7 @@ app.get('/update', (req, res) => {
         res.redirect('/select');
 })
 
-// delete data from st_info table
+// delete dataProject from st_info table
 app.get('/delete', (req, res) => {
     const st_id= req.query.st_id;
     const result = connection.query("delete from st_info where ST_ID = ?",

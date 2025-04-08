@@ -10,7 +10,7 @@ systemctl stop mongod
 export IP_TEMP=$(ip addr | grep enp0s3 | grep inet | cut -d " " -f6 | cut -d "/" -f1)
 echo $IP_TEMP
 
-# remove data directory
+# remove dataProject directory
 if [ -d /shard/data ]; then
     rm -rf /shard/data
 fi

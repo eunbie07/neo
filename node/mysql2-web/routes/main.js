@@ -20,7 +20,7 @@ app.get('/select', async (req, res) => {
     console.log(rows);
     res.send(rows);
 })
-// inset data to st_info table
+// inset dataProject to st_info table
 app.get('/insert', async (req, res) => {
     const { st_id, name, dept } = req.query;
     const [rows] = await pool.query("insert into st_info values (?, ?, ?)",
@@ -28,7 +28,7 @@ app.get('/insert', async (req, res) => {
     res.redirect('/select');
 })
 
-// update data to st_info table
+// update dataProject to st_info table
 app.get('/update', async (req, res) => {
     const { st_id, name, dept } = req.query;
     const [rows] = await pool.query("update st_info set NAME = ?, DEPT = ? where ST_ID = ?",
@@ -36,7 +36,7 @@ app.get('/update', async (req, res) => {
     res.redirect('/select');
 })
 
-// delete data from st_info table
+// delete dataProject from st_info table
 app.get('/delete', async (req, res) => {
     const st_id= req.query.st_id;
     const [rows] = await pool.query("delete from st_info where ST_ID = ?",

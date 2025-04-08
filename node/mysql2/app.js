@@ -16,21 +16,21 @@ const db = async () => {
         let [rows, fields] = await connection.query("select * from st_info");
         console.log(rows);
 
-        // make insert data
+        // make insert dataProject
         let data = {
             st_id: "202499",
             name: "Moon",
             dept: "Computer"
         }
 
-        // inserted data's id
+        // inserted dataProject's id
         let insertId = data.st_id;
 
         //insert query
         [rows, fields] = await connection.query("insert into st_info set ?", data);
         console.log("\nData is inserted~!!");
         
-        // select * query for inserted data
+        // select * query for inserted dataProject
         [rows, fields] = await connection.query("select * from st_info where st_id=?", insertId);
         console.log(rows);
 
@@ -38,7 +38,7 @@ const db = async () => {
         [rows, fields] = await connection.query("update st_info set dept=? where st_id=?", ["Game", insertId]);
         console.log("\nData is Updated~!!");
 
-        // select * query for updated data
+        // select * query for updated dataProject
         [rows, fields] = await connection.query("select * from st_info where st_id=?", insertId);
         console.log(rows);
 
@@ -46,7 +46,7 @@ const db = async () => {
         [rows, fields] = await connection.query("delete from st_info where st_id=?", insertId);
         console.log('\nData is Deleted~!!');
 
-        // select * query for updated data
+        // select * query for updated dataProject
         [rows, fields] = await connection.query("select * from st_info");
         console.log(rows);
 
