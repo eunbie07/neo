@@ -7,7 +7,7 @@ const data = JSON.stringify({
 const options = {
   hostname: '192.168.1.34',
   port: 8000,
-  path: '/dataProject',
+  path: '/data',
   method: 'GET',
 };
 

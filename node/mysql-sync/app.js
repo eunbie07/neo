@@ -13,14 +13,14 @@ var connection = new mysql({
 let result = connection.query('select * from st_info');
 console.log(result);
 
-// make insert dataProject
+// make insert data
 let data = {
     st_id:"202599",
     name: "Moon",
     dept:"Computer"
 }
 
-// inserted dataProject's id
+// inserted data's id
 let insertId = data.st_id;
 
 // insert query
@@ -28,7 +28,7 @@ result = connection.query("insert into st_info values (?, ?, ?)",
     [insertId, data.name, data.dept]);
     console.log("Data is inserted : " + insertId);
 
-// select * query for inserted dataProject
+// select * query for inserted data
 result = connection.query("select * from st_info where st_id = ?", [insertId]);
 console.log(result);
 
@@ -37,7 +37,7 @@ result = connection.query("update st_info set dept = ? where st_id = ?",
     ["Game", insertId]);
     console.log("Data is updated : " + insertId);
 
-// select * query for updated dataProject
+// select * query for updated data
 result = connection.query("select * from st_info where st_id = ?", [insertId]);
 console.log(result);
 
@@ -46,6 +46,6 @@ result = connection.query("delete from st_info where st_id = ?",
     [insertId]);
     console.log("Data is deleted : " + insertId);
 
-// select * query for deleted dataProject
+// select * query for deleted data
 result = connection.query("select * from st_info");
 console.log(result);
