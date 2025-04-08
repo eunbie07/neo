@@ -5,9 +5,9 @@ def counter(max):
     def output():
         print("t = %d" % t)
 
-    while t < max :
-            output()
-            t += 1
+    while t < max:
+        output()
+        t += 1
 
-n = input("input a number: ")
+n = input("input number : ")
 counter(int(n))

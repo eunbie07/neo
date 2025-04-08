@@ -8,7 +8,6 @@ def counter3(max):
     return
 
 timer = counter3(5)
-# print(next(timer))
 print(timer.__next__())
 print(timer.__next__())
 print(timer.__next__())

@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import calc_func
+
 a = int(input("Enter a number: "))
 b = int(input("Enter another number: "))
 

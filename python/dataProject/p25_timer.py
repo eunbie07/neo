@@ -1,13 +1,18 @@
 #!/usr/bin/env python
 
-def counter2():
-    t = [0]
-    def increment():
-        t[0] +=1
-        return t[0]
-    return increment
+def calc(a):
+    def add(b):
+        return a + b
+    return add
 
-timer = counter2()
-print(timer())
+sum = calc(1)
+print(sum(2))
 
-print(timer())
+def hello(msg):
+    message = "Hi, " + msg
+    def say():
+        print(message)
+    return say
+
+f = hello('Moon')
+f()

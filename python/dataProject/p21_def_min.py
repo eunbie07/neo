@@ -9,4 +9,4 @@ def min(a, b):
 a = int(input("input first number: "))
 b = int(input("input second number: "))
 
-print("{} vs {} : Min number {}".format(a, b, min(a, b)))
+print("{} vs {} : Min number = {}".format(a, b, min(a, b)))

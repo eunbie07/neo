@@ -12,15 +12,15 @@ def datetime_deco(func):
 
 @datetime_deco
 def func1():
-    print('Main Function start')
+    print('Main Function1 start')
 
 @datetime_deco
 def func2():
-    print('Main Function start')
+    print('Main Function2 start')
 
 @datetime_deco
 def func3():
-    print('Main Function start')
+    print('Main Function2 start')
 
 func1()
 func2()

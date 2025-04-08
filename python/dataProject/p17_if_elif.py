@@ -9,9 +9,9 @@ while True:
         print('Please enter a valid input')
         continue
     else:
-        if int(i) > 0 :
+        if int(i) > 0:
             print("This is positive number")
-        elif int(i) < 0 :
+        elif int(i) < 0:
             print("This is negative number")
         else:
-            print("This is zero")
+            print("This is Zero")

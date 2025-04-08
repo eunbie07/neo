@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# f(x) = x * f(x-1), f(x) -1
+# f(x) = x * f(x-1), f(x) = 1
 
 def factorial(n):
     if n <= 1:

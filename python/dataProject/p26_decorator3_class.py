@@ -11,7 +11,7 @@ class DatetimeDecorator:
         print(datetime.datetime.now())
         print()
 
-class Mainclass:
+class MainClass:
     @DatetimeDecorator
     def func1():
         print("Main Function1 start")
@@ -24,7 +24,7 @@ class Mainclass:
     def func3():
         print("Main Function3 start")
 
-my = Mainclass()
+my = MainClass()
 my.func1()
 my.func2()
 my.func3()
