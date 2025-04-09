@@ -4,7 +4,7 @@ import pygame, sys
 from pygame.locals import *
 
 pygame.init()
-DISPLAYSURE = pygame.display.set_mode((400,300))
+DISPLAYSURF = pygame.display.set_mode((400, 300))
 pygame.display.set_caption('Hello Pygame World!!')
 
 while True:
