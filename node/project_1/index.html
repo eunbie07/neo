@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>스트레스 데이터 시각화</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <h2>소셜미디어 스트레스 경험 비율 (2023)</h2>
+  <canvas id="myChart" style="max-width: 400px; max-height: 300px;"></canvas>
+
+  <script>
+    fetch('stress.json')
+      .then(response => response.json())
+      .then(data => {
+        // 평균 점수 항목 제외하고, 비율 데이터만 필터링
+        const filtered = data.filter(item => item.C3_NM !== "평균");
+
+        const labels = filtered.map(item => item.C3_NM); // 경험별 문구
+        const values = filtered.map(item => parseFloat(item.DT)); // 해당 비율 값
+
+        // 차트 생성
+        const ctx = document.getElementById('myChart').getContext('2d');
+        new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: '비율 (%)',
+              data: values,
+              backgroundColor: 'rgba(75, 192, 192, 0.6)',
+              borderColor: 'rgba(75, 192, 192, 1)',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true,
+                title: {
+                  display: true,
+                  text: '비율 (%)'
+                }
+              }
+            }
+          }
+        });
+      });
+  </script>
+</body>
+</html>

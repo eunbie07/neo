@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>KOSIS 스트레스 통계</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 30px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 30px; }
+    th, td { border: 1px solid #ccc; padding: 10px; text-align: center; }
+    th { background-color: #f0f0f0; }
+    canvas { margin-top: 40px; }
+  </style>
+</head>
+<body>
+
+<h1>📊 최근 3년 스트레스 평균 지수 (KOSIS)</h1>
+<div id="table-container">표를 불러오는 중...</div>
+<canvas id="stressChart" width="600" height="300"></canvas>
+
+<script>
+  fetch('data.json')
+    .then(res => res.json())
+    .then(data => {
+      // 표 만들기
+      const tableDiv = document.getElementById("table-container");
+      let tableHTML = `<table>
+        <thead>
+          <tr><th>년도</th><th>내용</th><th>값</th></tr>
+        </thead><tbody>`;
+      data.forEach(row => {
+        tableHTML += `<tr><td>${row.PRD_DE}</td><td>${row.C1_NM}</td><td>${row.DT}</td></tr>`;
+      });
+      tableHTML += `</tbody></table>`;
+      tableDiv.innerHTML = tableHTML;
+
+      // 그래프 그리기
+      const labels = data.map(row => row.PRD_DE).reverse(); // 최근년도 오른_

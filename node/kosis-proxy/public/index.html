@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>KOSIS 데이터 뷰어</title>
+</head>
+<body>
+  <h2>국가통계포털 KOSIS - 스트레스 통계</h2>
+  <div id="output">불러오는 중...</div>
+
+  <script>
+    fetch('/api/kosis')
+      .then(res => res.json())
+      .then(data => {
+        const output = document.getElementById('output');
+        output.innerHTML = "<pre>" + JSON.stringify(data, null, 2) + "</pre>";
+      })
+      .catch(err => {
+        document.getElementById('output').innerText = "오류 발생: " + err;
+      });
+  </script>
+</body>
+</html>
