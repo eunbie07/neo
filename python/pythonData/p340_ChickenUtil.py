@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup
 class ChickenStore():
     myencoding = 'utf-8'
 
-    def getWebDraver(self, cmdJavaScript):
+    def getWebDraiver(self, cmdJavaScript):
         print(cmdJavaScript)
         self.driver.execute_script(cmdJavaScript)
         wait = 5
@@ -23,8 +23,7 @@ class ChickenStore():
         if self.soup == None:
             return None
         else:
-            if self.brandname != 'pelicana':
-                return BeautifulSoup(self.soup, 'html.parser')
+            return BeautifulSoup(self.soup, 'html.parser')
     
     def get_request_url(self):
         request = urllib.request.Request(self.url)
@@ -32,31 +31,32 @@ class ChickenStore():
             context = ssl._create_unverified_context()
             response = urllib.request.urlopen(request, context=context)
             if response.getcode() == 200:
-                if self.brandname != 'pelicana':
+                if self.brandName != 'pelicana':
                     return response.read().decode(self.myencoding)
                 else:
                     return response
         except Exception as err:
             print(err)
             now = datetime.datetime.now()
-            msg = '[%s] error for URL : %s' % (now, self.url)
+            msg = '[%s] error for url : %s' % (now, self.url)
             print(msg)
             return None
         
     def save2Csv(self, result):
         data = pd.DataFrame(result, columns=self.mycolumns)
-        data.to_csv(self.brandName + '.csv', encoding=self.myencoding, index=False)
+        data.to_csv(self.brandName + '.csv', encoding=self.myencoding, index=True)
 
     def __init__(self, brandName, url):
         self.brandName = brandName
         self.url = url
+
         self.mycolumns = ['brand', 'store', 'sido', 'gungu', 'address']
-    
+
         if self.brandName in ['pelicana', 'nene', 'cheogajip', 'goobne']:
             self.mycolumns.append('phone')
         else:
             pass
-
+    
         if self.brandName != 'goobne':
             self.soup = self.get_request_url()
             self.driver = None
