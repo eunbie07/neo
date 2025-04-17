@@ -9,6 +9,7 @@ trailing nullcols(
     imonth,
     iday,
     country,
+    country_txt,
     region,
     region_txt,
     provstate,
