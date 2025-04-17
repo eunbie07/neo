@@ -1,9 +1,9 @@
-OPTION (SKIP=1)
-load data
-infile 'myterror.csv'
-insert into table myterror
-fields terminated by ','
-trailing nullcol(
+OPTIONS (SKIP=1)
+LOAD DATA
+INFILE 'myterror.csv'
+INTO TABLE myterror
+FIELDS TERMINATED BY ','
+TRAILING NULLCOLS (
     event_id,
     iyear,
     imonth,
