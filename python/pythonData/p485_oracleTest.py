@@ -15,13 +15,8 @@ try:
     conn = cx_Oracle.connect(loginfo)
     cur = conn.cursor()
 
-    sql = 'select * from country_smmary_top_10'
+    sql = 'select * from three_country'
     cur.execute(sql)
-
-    cur = conn.cursor()
-    print(type(cur))
-
-    sql = 'select * from theater'
 
     name = []
     year = []
@@ -32,19 +27,21 @@ try:
         year.append(result[1])
         bindo.append(result[2])
 
-    myseries = Series(bindo, index=year, name='bindo')
+    myseries = Series(bindo, index=[name, year])
     print(myseries)
 
     for idx in range(0, 2):
         myframe = myseries.unstack(idx)
         print(myframe)
-        myframe.plot(kind='bar', rot=0)
-        plt.title('3개국 테러 발생 현황')
-        plt.show()
 
-        filename = 'p481_orcaleTest.png'
+        myframe.plot(kind='barh', rot=0)
+        plt.title('3개국 테러 발생 현황')
+        plt.xlabel('년도')
+        plt.ylabel('발생건수')
+
+        filename = 'p485_oracleChart' + str(idx + 1) + '.png'
         plt.savefig(filename, dpi=400, bbox_inches='tight')
-        print(filename + ' saved')
+        print(filename + ' file saved...')
         plt.show()
 
 except Exception as err:
