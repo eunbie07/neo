@@ -4,13 +4,14 @@ INFILE 'myterror.csv'
 INTO TABLE myterror
 FIELDS TERMINATED BY ','
 TRAILING NULLCOLS (
-    eventid,
+    event_id,
     iyear,
     imonth,
     iday,
     country,
     country_txt,
-    region,region_txt,
+    region,
+    region_txt,
     provstate,
     city,
     latitude,
