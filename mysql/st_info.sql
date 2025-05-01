@@ -6,4 +6,3 @@ CREATE TABLE `st_info` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 INSERT INTO `st_info` VALUES (202501,'LeeGilDong','Game'),(202502,'KimGilDong','Computer'),(202503,'HongGilDong','Computer');
-
