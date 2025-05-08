@@ -1,0 +1,7 @@
+## Service Definition
+services:
+  webserver:
+    build:
+      context: data
+      dockerfile: myDockerfile
+      

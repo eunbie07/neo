@@ -1,0 +1,4 @@
+## Service Definition
+services:
+  webserver:
+    build: .
