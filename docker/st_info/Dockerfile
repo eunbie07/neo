@@ -5,7 +5,7 @@ FROM node:16
 WORKDIR /usr/src/app
 
 # Step 3
-RUN git clone http://github.com/eunbie07/docker-publish
+RUN git clone https://github.com/impelfin/docker-publish
 WORKDIR /usr/src/app/docker-publish/st_info
 RUN npm install
 
