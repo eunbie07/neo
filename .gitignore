@@ -45,3 +45,4 @@ docker/mongodb/mongo*
 
 
 react/**/.git
+nestjs/**/.git
