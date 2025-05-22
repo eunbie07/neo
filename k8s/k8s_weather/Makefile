@@ -33,12 +33,12 @@ k8init:
 
 k8commit:
 	docker commit weather weathers
-	docker tag weathers impelfin/weathers
-	docker push impelfin/weathers
+	docker tag weathers eunbie/weathers
+	docker push eunbie/weathers
 
 k8clean:
 	docker rm -f weather
-	docker rmi -f weather weathers impelfin/weathers
+	docker rmi -f weather weathers eunbie/weathers
 
 # === Kubernetes 명령 ===
 appdep:
