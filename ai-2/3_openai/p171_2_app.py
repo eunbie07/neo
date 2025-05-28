@@ -78,8 +78,10 @@ def run_conversation(user_query):
 
 user_query = "마우스의 가격은 얼마인가요?"
 response = run_conversation(user_query)
-print(json.dumps(response, ensure_ascii=False))
+print(json.dumps(response["choices"][0]["message"]["content"], ensure_ascii=False))
+print('-' * 50)
 
 user_query = "HDD의 가격은 얼마인가요?"
 response = run_conversation(user_query)
-print(json.dumps(response, ensure_ascii=False))
+print(json.dumps(response["choices"][0]["message"]["content"], ensure_ascii=False))
+print('-' * 50)
