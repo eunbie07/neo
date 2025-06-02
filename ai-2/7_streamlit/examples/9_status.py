@@ -4,23 +4,23 @@ import time
 progress_bar = st.progress(0)
 
 for percent in range(0, 101, 10):
-    time.sleep(0.5)
+    time.sleep(0.2)
     progress_bar.progress(percent)
 
-with st.spinner('로딩중...'):
-    time.sleep(5)
-st.success('로딩완료!')
+with st.spinner('Wait for it...'):
+    time.sleep(3)
+st.success('Done!')
 
 st.balloons()
 
 st.snow()
 
-st.success('로딩완료!')
+st.success('Success!')
 
-st.error('에러 발생!')
+st.error('Error!')
 
-st.warning('경고 발생!')
+st.warning('Warning!')
 
-st.info('정보 발생!')
+st.info('Info!')
 
-st.exception('에러 발생!')
+st.exception(Exception('Exception!'))
