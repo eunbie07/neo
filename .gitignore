@@ -43,7 +43,7 @@ secret.json
 mongodb/backup
 
 ## oracle
-oracle/node/dbConfig.js
+oracle/node/dbConfig.jspy
 oracle/**/node_modules
 oracle/**/package-lock.json
 
